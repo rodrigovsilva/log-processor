@@ -13,6 +13,20 @@ public class LogObject {
     private String payload;
     private long requestDurationInMillis;
 
+    public LogObject(Calendar dateTimestamp, String threadId, String userContext, String uri, String resourceName, String payload, long requestDurationInMillis){
+        this.dateTimestamp = dateTimestamp;
+        this.threadId = threadId;
+        this.userContext= userContext;
+        this.uri = uri;
+        this.resourceName = resourceName;
+        this.payload = payload;
+        this.requestDurationInMillis = requestDurationInMillis;
+    }
+
+    public LogObject(){
+
+    }
+
     /**
      * @return the dateTimestamp
      */
