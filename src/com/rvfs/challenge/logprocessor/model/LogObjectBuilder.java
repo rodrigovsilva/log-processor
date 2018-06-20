@@ -1,6 +1,6 @@
 package com.rvfs.challenge.logprocessor.model;
 
-import com.rvfs.challenge.logprocessor.model.LogObject;
+import java.util.Calendar;
 
 /**
  * Log object builder.
@@ -19,55 +19,62 @@ public class LogObjectBuilder {
      * Default constructor
      * 
      */
-    public LogObjetBuilder(){
+    public LogObjectBuilder(){
     }
 
     /**
      * @param dateTimestamp the dateTimestamp to set
      */
-    public void setDateTimestamp(Calendar dateTimestamp) {
+    public LogObjectBuilder setDateTimestamp(Calendar dateTimestamp) {
         this.dateTimestamp = dateTimestamp;
+        return this;
     }
     /**
      * @param payload the payload to set
      */
-    public void setPayload(String payload) {
+    public LogObjectBuilder setPayload(String payload) {
         this.payload = payload;
+        return this;
     }
     
     /**
      * @param requestDurationInMillis the requestDurationInMillis to set
      */
-    public void setRequestDurationInMillis(long requestDurationInMillis) {
+    public LogObjectBuilder setRequestDurationInMillis(long requestDurationInMillis) {
         this.requestDurationInMillis = requestDurationInMillis;
+        return this;
     }
     
     /**
      * @param resourceName the resourceName to set
      */
-    public void setResourceName(String resourceName) {
+    public LogObjectBuilder setResourceName(String resourceName) {
         this.resourceName = resourceName;
+        return this;
     }
     
     /**
      * @param threadId the threadId to set
      */
-    public void setThreadId(String threadId) {
+    public LogObjectBuilder setThreadId(String threadId) {
         this.threadId = threadId;
+        return this;
     }
     
     /**
      * @param uri the uri to set
      */
-    public void setUri(String uri) {
+    public LogObjectBuilder setUri(String uri) {
         this.uri = uri;
+        return this;
     }
     
     /**
      * @param userContext the userContext to set
      */
-    public void setUserContext(String userContext) {
+    public LogObjectBuilder setUserContext(String userContext) {
         this.userContext = userContext;
+        return this;
     }
 
     /**

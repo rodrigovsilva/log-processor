@@ -1,5 +1,7 @@
 package com.rvfs.challenge.logprocessor.model;
 
+import java.util.Calendar;
+
 /**
  * Basic Log object.
  */
