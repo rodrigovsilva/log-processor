@@ -9,13 +9,11 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.rvfs.challenge.logprocessor.domain.LogRegexpPattern;
+import com.rvfs.challenge.logprocessor.domain.LogDataPattern;
 import com.rvfs.challenge.logprocessor.exception.LogParserException;
 import com.rvfs.challenge.logprocessor.model.LogObject;
 import com.rvfs.challenge.logprocessor.model.LogObjectBuilder;
@@ -40,14 +38,16 @@ public class LogParser {
 
 		List<LogObject> parsedLogs = new ArrayList<>();
 
-		Consumer<String> logsConsumer = (log) -> {
+		Consumer<String> logsConsumer = (logLine) -> {
 			LogObjectBuilder logBuilder = new LogObjectBuilder();
 
-			String dateTimestamp = matchPattern(LogRegexpPattern.DATETIME.getPattern(), log);
-			LocalDateTime localDate = LocalDateTime.parse(StringUtils.trim(dateTimestamp),
-					DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss,SSS"));
-
-			LogObject logObject = logBuilder.setDateTimestamp(localDate).createLogObject();
+			LogObject logObject = logBuilder//
+					.setDateTimestamp(parseDateTimestamp(logLine)) //
+					.setThreadId(parseThreadId(logLine))//
+					.setUserContext(parseUserContext(logLine)) //
+					.setUri(parseUriRequestPayload(logLine)) //
+					.setRequestDurationInMillis(parseRequestDuration(logLine)) //
+					.createLogObject();
 
 			System.out.println(logObject.toString());
 
@@ -62,22 +62,62 @@ public class LogParser {
 	}
 
 	/**
-	 * Match a pattern.
-	 *
-	 * @param pattern
-	 *            Regexp Pattern to test.
+	 * Parse datetimestamp data.
+	 * 
 	 * @param logLine
-	 *            Line of log.
-	 * @return Piece of log found.
+	 *            Log line.
+	 * @return datetimestamp data parsed.
 	 */
-	private static String matchPattern(String pattern, String logLine) {
-		Pattern logPattern = Pattern.compile(pattern);
-		Matcher matcher = logPattern.matcher(logLine);
-
-		if (matcher.find()) {
-			return matcher.group(0);
-		}
-
-		return StringUtils.EMPTY;
+	private static LocalDateTime parseDateTimestamp(String logLine) {
+		String dateTimestamp = LogDataPattern.DATETIME.matchPattern(logLine);
+		return LocalDateTime.parse(StringUtils.trim(dateTimestamp),
+				DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss,SSS"));
 	}
+
+	/**
+	 * Parse thread id data..
+	 * 
+	 * @param logLine
+	 *            log line.
+	 * @return thread id data parsed.
+	 */
+	private static String parseThreadId(String logLine) {
+		return LogDataPattern.THREAD_ID.matchPattern(logLine);
+	}
+
+	/**
+	 * Parse user context data.
+	 * 
+	 * @param logLine
+	 *            log line.
+	 * @return user context data parsed.
+	 */
+	private static String parseUserContext(String logLine) {
+		return LogDataPattern.USER_CONTEXT.matchPattern(logLine);
+	}
+
+	/**
+	 * Parse URI, Request and Payload data.
+	 * 
+	 * @param logLine
+	 *            Log line.
+	 * @return URI, Request and Payload data parsed.
+	 */
+	private static String parseUriRequestPayload(String logLine) {
+		String data = LogDataPattern.URI_REQUEST_PAYLOAD.matchPattern(logLine);
+		return data;
+	}
+
+	/**
+	 * Parse request duration.
+	 * 
+	 * @param logLine
+	 *            Log line.
+	 * @return request duration parsed.
+	 */
+	private static long parseRequestDuration(String logLine) {
+		String data = LogDataPattern.REQUEST_DURATION.matchPattern(logLine);
+		return StringUtils.isNumeric(data) ? Long.parseLong(data) : 0;
+	}
+
 }
