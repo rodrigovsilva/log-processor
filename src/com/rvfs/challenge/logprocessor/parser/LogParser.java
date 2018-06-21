@@ -105,7 +105,17 @@ public class LogParser {
 	 */
 	private static String parseUriRequestPayload(String logLine) {
 		String data = LogDataPattern.URI_REQUEST_PAYLOAD.matchPattern(logLine);
+
 		return data;
+	}
+
+	private String parseUri(String parsedData) {
+		if (!StringUtils.containsAny(parsedData, ".do")) {
+			String[] dataReqPayload = StringUtils.split(parsedData, StringUtils.SPACE);
+			
+		}
+
+		return StringUtils.EMPTY;
 	}
 
 	/**
