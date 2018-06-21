@@ -6,139 +6,143 @@ import java.time.LocalDateTime;
 
 /**
  * Basic Log object.
+ * 
+ * @author Rodrigo Vinicius
  */
 public class LogObject {
 
-    private LocalDateTime dateTimestamp;
-    private String threadId;
-    private String userContext;
-    private String uri;
-    private String resourceName;
-    private String payload;
-    private long requestDurationInMillis;
+	private LocalDateTime dateTimestamp;
+	private String threadId;
+	private String userContext;
+	private String uri;
+	private String resourceName;
+	private String payload;
+	private long requestDurationInMillis;
 
-    public LogObject(LocalDateTime dateTimestamp, String threadId, String userContext, String uri, String resourceName, String payload, long requestDurationInMillis){
-        this.dateTimestamp = dateTimestamp;
-        this.threadId = threadId;
-        this.userContext= userContext;
-        this.uri = uri;
-        this.resourceName = resourceName;
-        this.payload = payload;
-        this.requestDurationInMillis = requestDurationInMillis;
-    }
+	public LogObject(LocalDateTime dateTimestamp, String threadId, String userContext, String uri, String resourceName,
+			String payload, long requestDurationInMillis) {
+		this.dateTimestamp = dateTimestamp;
+		this.threadId = threadId;
+		this.userContext = userContext;
+		this.uri = uri;
+		this.resourceName = resourceName;
+		this.payload = payload;
+		this.requestDurationInMillis = requestDurationInMillis;
+	}
 
-    public LogObject(){
+	public LogObject() {
 
-    }
+	}
 
-    /**
-     * @return the dateTimestamp
-     */
-    public LocalDateTime getDateTimestamp() {
-        return dateTimestamp;
-    }
+	/**
+	 * @return the dateTimestamp
+	 */
+	public LocalDateTime getDateTimestamp() {
+		return dateTimestamp;
+	}
 
-    /**
-     * @param dateTimestamp the dateTimestamp to set
-     */
-    public void setDateTimestamp(LocalDateTime dateTimestamp) {
-        this.dateTimestamp = dateTimestamp;
-    }
+	/**
+	 * @param dateTimestamp
+	 *            the dateTimestamp to set
+	 */
+	public void setDateTimestamp(LocalDateTime dateTimestamp) {
+		this.dateTimestamp = dateTimestamp;
+	}
 
-    /**
-     * @return the threadId
-     */
-    public String getThreadId() {
-        return threadId;
-    }
-    
-    /**
-     * @param threadId the threadId to set
-     */
-    public void setThreadId(String threadId) {
-        this.threadId = threadId;
-    }
+	/**
+	 * @return the threadId
+	 */
+	public String getThreadId() {
+		return threadId;
+	}
 
-    /**
-     * @return the userContext
-     */
-    public String getUserContext() {
-        return userContext;
-    }
-    
-    /**
-     * @param userContext the userContext to set
-     */
-    public void setUserContext(String userContext) {
-        this.userContext = userContext;
-    }
+	/**
+	 * @param threadId
+	 *            the threadId to set
+	 */
+	public void setThreadId(String threadId) {
+		this.threadId = threadId;
+	}
 
-    /**
-     * @return the uri
-     */
-    public String getUri() {
-        return uri;
-    }
+	/**
+	 * @return the userContext
+	 */
+	public String getUserContext() {
+		return userContext;
+	}
 
-    /**
-     * @param uri the uri to set
-     */
-    public void setUri(String uri) {
-        this.uri = uri;
-    }
+	/**
+	 * @param userContext
+	 *            the userContext to set
+	 */
+	public void setUserContext(String userContext) {
+		this.userContext = userContext;
+	}
 
-    /**
-     * @return the resourceName
-     */
-    public String getResourceName() {
-        return resourceName;
-    }
+	/**
+	 * @return the uri
+	 */
+	public String getUri() {
+		return uri;
+	}
 
-    /**
-     * @param resourceName the resourceName to set
-     */
-    public void setResourceName(String resourceName) {
-        this.resourceName = resourceName;
-    }
+	/**
+	 * @param uri
+	 *            the uri to set
+	 */
+	public void setUri(String uri) {
+		this.uri = uri;
+	}
 
-    /**
-     * @return the payload
-     */
-    public String getPayload() {
-        return payload;
-    }
+	/**
+	 * @return the resourceName
+	 */
+	public String getResourceName() {
+		return resourceName;
+	}
 
-    /**
-     * @param payload the payload to set
-     */
-    public void setPayload(String payload) {
-        this.payload = payload;
-    }
+	/**
+	 * @param resourceName
+	 *            the resourceName to set
+	 */
+	public void setResourceName(String resourceName) {
+		this.resourceName = resourceName;
+	}
 
-    /**
-     * @return the requestDurationInMillis
-     */
-    public long getRequestDurationInMillis() {
-        return requestDurationInMillis;
-    }
-    
-    /**
-     * @param requestDurationInMillis the requestDurationInMillis to set
-     */
-    public void setRequestDurationInMillis(long requestDurationInMillis) {
-        this.requestDurationInMillis = requestDurationInMillis;
-    }
+	/**
+	 * @return the payload
+	 */
+	public String getPayload() {
+		return payload;
+	}
 
-    @Override
-    public String toString() {
-        return new ToStringBuilder(this)
-                .append("dateTimestamp", dateTimestamp)
-                .append("threadId", threadId)
-                .append("userContext", userContext)
-                .append("uri", uri)
-                .append("resourceName", resourceName)
-                .append("payload", payload)
-                .append("requestDurationInMillis", requestDurationInMillis)
-                .toString();
-    }
+	/**
+	 * @param payload
+	 *            the payload to set
+	 */
+	public void setPayload(String payload) {
+		this.payload = payload;
+	}
+
+	/**
+	 * @return the requestDurationInMillis
+	 */
+	public long getRequestDurationInMillis() {
+		return requestDurationInMillis;
+	}
+
+	/**
+	 * @param requestDurationInMillis
+	 *            the requestDurationInMillis to set
+	 */
+	public void setRequestDurationInMillis(long requestDurationInMillis) {
+		this.requestDurationInMillis = requestDurationInMillis;
+	}
+
+	@Override
+	public String toString() {
+		return new ToStringBuilder(this).append("dateTimestamp", dateTimestamp).append("threadId", threadId)
+				.append("userContext", userContext).append("uri", uri).append("resourceName", resourceName)
+				.append("payload", payload).append("requestDurationInMillis", requestDurationInMillis).toString();
+	}
 }

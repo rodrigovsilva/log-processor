@@ -1,6 +1,8 @@
 package com.rvfs.challenge.logprocessor;
 
 import com.rvfs.challenge.logprocessor.exception.LogParserException;
+import com.rvfs.challenge.logprocessor.parser.LogParser;
+
 import org.apache.commons.lang3.StringUtils;
 
 import java.time.Duration;
