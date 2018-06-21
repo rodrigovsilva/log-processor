@@ -1,13 +1,13 @@
 package com.rvfs.challenge.logprocessor.model;
 
-import java.util.Calendar;
+import java.time.LocalDateTime;
 
 /**
  * Log object builder.
  */
 public class LogObjectBuilder {
     
-    private Calendar dateTimestamp;
+    private LocalDateTime dateTimestamp;
     private String threadId;
     private String userContext;
     private String uri;
@@ -25,7 +25,7 @@ public class LogObjectBuilder {
     /**
      * @param dateTimestamp the dateTimestamp to set
      */
-    public LogObjectBuilder setDateTimestamp(Calendar dateTimestamp) {
+    public LogObjectBuilder setDateTimestamp(LocalDateTime dateTimestamp) {
         this.dateTimestamp = dateTimestamp;
         return this;
     }

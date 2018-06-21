@@ -21,9 +21,13 @@
 		<mkdir dir="${build.dir}" />
 	</target>
 
-	<target name="compile" depends="init" description="Compile the source ">
+	<target name="compile" depends="init" description="Compile the source " >
 		<!-- Compile the java code from ${src.dir} into ${build.dir} -->
-		<javac includeantruntime="false" srcdir="${src.dir}" destdir="${build.dir}" />
+		<javac includeantruntime="false" srcdir="${src.dir}" destdir="${build.dir}" >
+			<classpath>
+				<pathelement path="lib/commons-lang3-3.7.jar"/>
+			</classpath>
+		</javac>
 	</target>
 
 	<target name="dist" depends="compile" description="Package, output to JAR">

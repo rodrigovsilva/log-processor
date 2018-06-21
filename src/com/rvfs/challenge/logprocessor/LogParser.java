@@ -1,18 +1,23 @@
 package com.rvfs.challenge.logprocessor;
 
+import com.rvfs.challenge.logprocessor.domain.LogRegexpPattern;
 import com.rvfs.challenge.logprocessor.exception.LogParserException;
 import com.rvfs.challenge.logprocessor.model.LogObject;
 import com.rvfs.challenge.logprocessor.model.LogObjectBuilder;
+import org.apache.commons.lang3.StringUtils;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
 /**
@@ -28,23 +33,44 @@ public class LogParser {
      */
     public static void parseFile(String fileName) throws LogParserException {
 
-        // regexp for datetimestamp: (^[^\\(]+)
-        // regexp for threadId: \(([^)]+)\)
-        // regexp for userContext \[([^)]+)\]
-        // regexp for request / uri / payload: \/(.*?)\in
-        // regexp for request time: (?<=in )(?s)(.*$)
         List<LogObject> parsedLogs = new ArrayList<>();
 
-        Consumer<LogObject> logsConsumer = (log) -> {
-            parsedLogs.add(new LogObjectBuilder().setDateTimestamp(Calendar.getInstance()).createLogObject());
+        Consumer<String> logsConsumer = (log) -> {
+            LogObjectBuilder logBuilder = new LogObjectBuilder();
+
+            String dateTimestamp = matchPattern(LogRegexpPattern.DATETIME.getPattern(), log);
+            LocalDateTime localDate = LocalDateTime.parse(StringUtils.trim(dateTimestamp), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss,SSS"));
+
+            LogObject logObject = logBuilder.setDateTimestamp(localDate).createLogObject();
+
+            System.out.println(logObject.toString());
+
+            parsedLogs.add(logObject);
         };
 
         try (Stream<String> stream = Files.lines(Paths.get(fileName), StandardCharsets.UTF_8)) {
-            stream.forEachOrdered(System.out::println);
+            stream.forEachOrdered(logsConsumer);
         } catch (IOException e) {
             throw new LogParserException("There is a problem to read the log file.", e);
         }
     }
 
 
+    /**
+     * Match a pattern.
+     *
+     * @param pattern Regexp Pattern to test.
+     * @param logLine Line of log.
+     * @return Piece of log found.
+     */
+    private static String matchPattern(String pattern, String logLine) {
+        Pattern logPattern = Pattern.compile(pattern);
+        Matcher matcher = logPattern.matcher(logLine);
+
+        if (matcher.find()) {
+            return matcher.group(0);
+        }
+
+        return StringUtils.EMPTY;
+    }
 }

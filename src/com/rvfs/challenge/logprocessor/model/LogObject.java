@@ -1,13 +1,15 @@
 package com.rvfs.challenge.logprocessor.model;
 
-import java.util.Calendar;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
+import java.time.LocalDateTime;
 
 /**
  * Basic Log object.
  */
 public class LogObject {
 
-    private Calendar dateTimestamp;
+    private LocalDateTime dateTimestamp;
     private String threadId;
     private String userContext;
     private String uri;
@@ -15,7 +17,7 @@ public class LogObject {
     private String payload;
     private long requestDurationInMillis;
 
-    public LogObject(Calendar dateTimestamp, String threadId, String userContext, String uri, String resourceName, String payload, long requestDurationInMillis){
+    public LogObject(LocalDateTime dateTimestamp, String threadId, String userContext, String uri, String resourceName, String payload, long requestDurationInMillis){
         this.dateTimestamp = dateTimestamp;
         this.threadId = threadId;
         this.userContext= userContext;
@@ -32,14 +34,14 @@ public class LogObject {
     /**
      * @return the dateTimestamp
      */
-    public Calendar getDateTimestamp() {
+    public LocalDateTime getDateTimestamp() {
         return dateTimestamp;
     }
 
     /**
      * @param dateTimestamp the dateTimestamp to set
      */
-    public void setDateTimestamp(Calendar dateTimestamp) {
+    public void setDateTimestamp(LocalDateTime dateTimestamp) {
         this.dateTimestamp = dateTimestamp;
     }
 
@@ -125,5 +127,18 @@ public class LogObject {
      */
     public void setRequestDurationInMillis(long requestDurationInMillis) {
         this.requestDurationInMillis = requestDurationInMillis;
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+                .append("dateTimestamp", dateTimestamp)
+                .append("threadId", threadId)
+                .append("userContext", userContext)
+                .append("uri", uri)
+                .append("resourceName", resourceName)
+                .append("payload", payload)
+                .append("requestDurationInMillis", requestDurationInMillis)
+                .toString();
     }
 }
