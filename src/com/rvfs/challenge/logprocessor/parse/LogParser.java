@@ -143,15 +143,18 @@ public class LogParser {
 	 * @return Resource name parsed.
 	 */
 	private static String parseResourceName(String parsedData) {
+		String resourceName = StringUtils.EMPTY;
+
 		if (!StringUtils.containsAny(parsedData, ".do")) {
 			String[] dataResPayload = StringUtils.split(parsedData, StringUtils.SPACE);
 
 			if (dataResPayload != null && dataResPayload.length > 0) {
-				return dataResPayload[0];
+				resourceName = StringUtils.substringBefore(dataResPayload[0], "?");
+				resourceName = StringUtils.substringBefore(resourceName, "/");
 			}
 		}
 
-		return StringUtils.EMPTY;
+		return resourceName;
 	}
 
 	/**

@@ -3,8 +3,6 @@ package com.rvfs.challenge.logprocessor.report;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Predicate;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
@@ -32,9 +30,22 @@ public class LogReport {
 		// order by local date time
 		logs.sort(Comparator.comparing(LogObject::getRequestDurationInMillis).reversed());
 
-		logs.stream().filter(l -> (StringUtils.isNotEmpty(l.getResourceName()))).limit(numberOfRequest)
-				.forEach(l -> System.out.println(new StringBuilder(l.getResourceName()).append(": ")
-						.append(l.getRequestDurationInMillis()).append(" - ").append(l.toString())));
+		// filter all existent resources
+		logs.stream().filter(l -> (StringUtils.isNotEmpty(l.getResourceName())));
+
+		// grouping all resource names by name, summarizing sum and count and
+		// calculating the average
+		Map<String, Long> topResourcesCounting = logs.stream()
+				.collect(Collectors.groupingBy(LogObject::getResourceName,
+						Collectors.collectingAndThen(Collectors.summarizingLong(LogObject::getRequestDurationInMillis),
+								summarize -> summarize.getSum() / summarize.getCount())));
+
+		// ordering resources from top to bottom
+		topResourcesCounting.entrySet().stream().sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()));
+
+		// print out top request average
+		topResourcesCounting.entrySet().stream().limit(numberOfRequest)
+				.forEach((e) -> System.out.println(new StringBuilder(e.getKey()).append(": ").append(e.getValue())));
 
 	}
 
