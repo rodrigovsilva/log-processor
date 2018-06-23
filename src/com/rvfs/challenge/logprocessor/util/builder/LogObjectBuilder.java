@@ -1,6 +1,8 @@
-package com.rvfs.challenge.logprocessor.model;
+package com.rvfs.challenge.logprocessor.util.builder;
 
 import java.time.LocalDateTime;
+
+import com.rvfs.challenge.logprocessor.model.LogObject;
 
 /**
  * Log object builder.

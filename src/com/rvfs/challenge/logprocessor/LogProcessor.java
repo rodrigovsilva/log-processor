@@ -1,16 +1,19 @@
 package com.rvfs.challenge.logprocessor;
 
-import com.rvfs.challenge.logprocessor.exception.LogParserException;
-import com.rvfs.challenge.logprocessor.parser.LogParser;
-
-import org.apache.commons.lang3.StringUtils;
-
 import java.time.Duration;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
+import java.util.List;
 import java.util.stream.Stream;
+
+import org.apache.commons.lang3.StringUtils;
+
+import com.rvfs.challenge.logprocessor.exception.LogParserException;
+import com.rvfs.challenge.logprocessor.model.LogObject;
+import com.rvfs.challenge.logprocessor.parse.LogParser;
+import com.rvfs.challenge.logprocessor.report.LogReport;
 
 /**
  * Log processor class.
@@ -47,7 +50,9 @@ public class LogProcessor {
 				if (StringUtils.isNumeric(args[1])) {
 					long numberOfTopRequests = Long.valueOf(args[1]);
 
-					LogParser.parseFile(filename);
+					List<LogObject> logs = LogParser.parseFile(filename);
+
+					LogReport.drawHistogram(logs);
 
 					System.out.println("File readed: " + args[0]);
 					System.out.println("Number to print out the top elements: " + numberOfTopRequests);

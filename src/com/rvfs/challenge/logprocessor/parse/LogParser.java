@@ -1,4 +1,4 @@
-package com.rvfs.challenge.logprocessor.parser;
+package com.rvfs.challenge.logprocessor.parse;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -16,7 +16,7 @@ import org.apache.commons.lang3.StringUtils;
 import com.rvfs.challenge.logprocessor.domain.LogDataPattern;
 import com.rvfs.challenge.logprocessor.exception.LogParserException;
 import com.rvfs.challenge.logprocessor.model.LogObject;
-import com.rvfs.challenge.logprocessor.model.LogObjectBuilder;
+import com.rvfs.challenge.logprocessor.util.builder.LogObjectBuilder;
 
 /**
  * Log parser class.
@@ -33,19 +33,24 @@ public class LogParser {
 	 *            Log filename.
 	 * @throws LogParserException
 	 *             To handle parse errors.
+	 * 
+	 * @return Parsed logs.
 	 */
-	public static void parseFile(String fileName) throws LogParserException {
+	public static List<LogObject> parseFile(String fileName) throws LogParserException {
 
 		List<LogObject> parsedLogs = new ArrayList<>();
 
 		Consumer<String> logsConsumer = (logLine) -> {
 			LogObjectBuilder logBuilder = new LogObjectBuilder();
 
+			String uriResourcePayload = parseUriRequestPayload(logLine);
+
 			LogObject logObject = logBuilder//
 					.setDateTimestamp(parseDateTimestamp(logLine)) //
 					.setThreadId(parseThreadId(logLine))//
 					.setUserContext(parseUserContext(logLine)) //
-					.setUri(parseUriRequestPayload(logLine)) //
+					.setUri(parseUri(uriResourcePayload)) //
+					.setResourceName(parseResourceName(uriResourcePayload)) //
 					.setRequestDurationInMillis(parseRequestDuration(logLine)) //
 					.createLogObject();
 
@@ -59,6 +64,8 @@ public class LogParser {
 		} catch (IOException e) {
 			throw new LogParserException("There is a problem to read the log file.", e);
 		}
+
+		return parsedLogs;
 	}
 
 	/**
@@ -109,10 +116,39 @@ public class LogParser {
 		return data;
 	}
 
-	private String parseUri(String parsedData) {
+	/**
+	 * Parse URI.
+	 * 
+	 * @param parsedData
+	 *            data to be parsed.
+	 * @return URI parsed.
+	 */
+	private static String parseUri(String parsedData) {
+		if (StringUtils.containsAny(parsedData, ".do")) {
+			String[] dataResPayload = StringUtils.split(parsedData, StringUtils.SPACE);
+
+			if (dataResPayload != null && dataResPayload.length > 0) {
+				return dataResPayload[0];
+			}
+		}
+
+		return StringUtils.EMPTY;
+	}
+
+	/**
+	 * Parse Resource Name.
+	 * 
+	 * @param parsedData
+	 *            data to be parsed.
+	 * @return Resource name parsed.
+	 */
+	private static String parseResourceName(String parsedData) {
 		if (!StringUtils.containsAny(parsedData, ".do")) {
-			String[] dataReqPayload = StringUtils.split(parsedData, StringUtils.SPACE);
-			
+			String[] dataResPayload = StringUtils.split(parsedData, StringUtils.SPACE);
+
+			if (dataResPayload != null && dataResPayload.length > 0) {
+				return dataResPayload[0];
+			}
 		}
 
 		return StringUtils.EMPTY;

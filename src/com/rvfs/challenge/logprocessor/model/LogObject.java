@@ -1,8 +1,9 @@
 package com.rvfs.challenge.logprocessor.model;
 
-import org.apache.commons.lang3.builder.ToStringBuilder;
-
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 /**
  * Basic Log object.
@@ -137,6 +138,15 @@ public class LogObject {
 	 */
 	public void setRequestDurationInMillis(long requestDurationInMillis) {
 		this.requestDurationInMillis = requestDurationInMillis;
+	}
+
+	/**
+	 * Date Time Grouping.
+	 * 
+	 * @return
+	 */
+	public String getDateTimeGrouping() {
+		return DateTimeFormatter.ofPattern("yyyyMMdd-HH").format(this.dateTimestamp);
 	}
 
 	@Override
