@@ -52,9 +52,10 @@ public class LogProcessor {
 
 					List<LogObject> logs = LogParser.parseFile(filename);
 
+					LogReport.printTopResourcesWithHighestAverageRequestDuration(logs, numberOfTopRequests);
 					LogReport.drawHistogram(logs);
 
-					System.out.println("File readed: " + args[0]);
+					System.out.println("File readed: " + filename);
 					System.out.println("Number to print out the top elements: " + numberOfTopRequests);
 				} else {
 					throw new LogParserException("The number of top requests must be numeric without digits.");
