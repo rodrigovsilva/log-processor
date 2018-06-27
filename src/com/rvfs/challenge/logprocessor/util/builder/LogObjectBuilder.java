@@ -18,6 +18,7 @@ public class LogObjectBuilder {
 	private String resourceName;
 	private String payload;
 	private long requestDurationInMillis;
+	private String entireUriResource;
 
 	/**
 	 * Default constructor
@@ -90,10 +91,20 @@ public class LogObjectBuilder {
 	}
 
 	/**
+	 * @param entireUriResource
+	 *            the entireUriResource to set
+	 */
+	public LogObjectBuilder setEntireUriResource(String entireUriResource) {
+		this.entireUriResource = entireUriResource;
+		return this;
+	}
+
+	/**
 	 * Create a log object.
 	 */
 	public LogObject createLogObject() {
-		return new LogObject(dateTimestamp, threadId, userContext, uri, resourceName, payload, requestDurationInMillis);
+		return new LogObject(dateTimestamp, threadId, userContext, uri, resourceName, payload, requestDurationInMillis,
+				entireUriResource);
 	}
 
 }

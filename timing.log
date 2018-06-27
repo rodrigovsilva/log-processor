@@ -995,7 +995,7 @@
 2015-08-19 00:06:44,371 (http--0.0.0.0-28080-85) [USER:300109921258] /mainContent.do?action=CAROUSEL&contentId=main_carousel in 5
 2015-08-19 00:06:44,372 (http--0.0.0.0-28080-187) [USER:300109921258] /mainContent.do?action=TOOLS&contentId=main_tools in 5
 2015-08-19 00:06:44,560 (http--0.0.0.0-28080-187) [USER:300109921258] getSubcriptionCampaigns 300109921258 true in 98
-2015-08-19 00:06:44,598 (http--0.0.0.0-28080-297) [CUST:CUS85J3381] /checkSession.do in 130
-2015-08-19 00:06:48,249 (http--0.0.0.0-28080-187) [USER:300109921258] /mainContent.do?action=SUBSCRIPTION&msisdn=300109921258&contentId=main_subscription in 3788
-2015-08-19 00:06:48,372 (http--0.0.0.0-28080-297) [CUST:CUS12B1435] /customerInfo.do?action=CUSTOMERINFO in 145
-2015-08-19 00:06:48,571 (http--0.0.0.0-28080-101) [CUST:CUS88Y1435] /customerInfo.do in 64
+2015-08-19 12:06:44,598 (http--0.0.0.0-28080-297) [CUST:CUS85J3381] /checkSession.do in 130
+2015-08-19 15:06:48,249 (http--0.0.0.0-28080-187) [USER:300109921258] /mainContent.do?action=SUBSCRIPTION&msisdn=300109921258&contentId=main_subscription in 3788
+2015-08-20 09:06:48,372 (http--0.0.0.0-28080-297) [CUST:CUS12B1435] /customerInfo.do?action=CUSTOMERINFO in 145
+2015-08-21 10:06:48,571 (http--0.0.0.0-28080-101) [CUST:CUS88Y1435] /customerInfo.do in 64

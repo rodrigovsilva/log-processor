@@ -31,7 +31,7 @@ public class LogReport {
 		logs.sort(Comparator.comparing(LogObject::getRequestDurationInMillis).reversed());
 
 		// filter all existent resources
-		logs.stream().filter(l -> (StringUtils.isNotEmpty(l.getResourceName())));
+		logs.stream().filter(l -> (StringUtils.isNotEmpty(l.getResourceName()))).forEach(System.out::println);
 
 		// grouping all resource names by name, summarizing sum and count and
 		// calculating the average

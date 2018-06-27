@@ -19,9 +19,10 @@ public class LogObject {
 	private String resourceName;
 	private String payload;
 	private long requestDurationInMillis;
+	private String entireUriResource;
 
 	public LogObject(LocalDateTime dateTimestamp, String threadId, String userContext, String uri, String resourceName,
-			String payload, long requestDurationInMillis) {
+			String payload, long requestDurationInMillis, String entireUriResource) {
 		this.dateTimestamp = dateTimestamp;
 		this.threadId = threadId;
 		this.userContext = userContext;
@@ -29,6 +30,7 @@ public class LogObject {
 		this.resourceName = resourceName;
 		this.payload = payload;
 		this.requestDurationInMillis = requestDurationInMillis;
+		this.entireUriResource = entireUriResource;
 	}
 
 	public LogObject() {
@@ -149,10 +151,19 @@ public class LogObject {
 		return DateTimeFormatter.ofPattern("yyyyMMdd-HH").format(this.dateTimestamp);
 	}
 
+	public String getEntireUriResource() {
+		return entireUriResource;
+	}
+
+	public void setEntireUriResource(String entireUriResource) {
+		this.entireUriResource = entireUriResource;
+	}
+
 	@Override
 	public String toString() {
 		return new ToStringBuilder(this).append("dateTimestamp", dateTimestamp).append("threadId", threadId)
 				.append("userContext", userContext).append("uri", uri).append("resourceName", resourceName)
-				.append("payload", payload).append("requestDurationInMillis", requestDurationInMillis).toString();
+				.append("payload", payload).append("requestDurationInMillis", requestDurationInMillis)
+				.append("entireUriResource", entireUriResource).toString();
 	}
 }

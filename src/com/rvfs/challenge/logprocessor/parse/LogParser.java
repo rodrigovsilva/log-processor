@@ -52,7 +52,7 @@ public class LogParser {
 					.setUri(parseUri(uriResourcePayload)) //
 					.setResourceName(parseResourceName(uriResourcePayload)) //
 					.setRequestDurationInMillis(parseRequestDuration(logLine)) //
-					.createLogObject();
+					.setEntireUriResource(uriResourcePayload).createLogObject();
 
 			System.out.println(logObject.toString());
 
@@ -124,7 +124,7 @@ public class LogParser {
 	 * @return URI parsed.
 	 */
 	private static String parseUri(String parsedData) {
-		if (StringUtils.containsAny(parsedData, ".do")) {
+		if (StringUtils.containsAny(parsedData, ".")) {
 			String[] dataResPayload = StringUtils.split(parsedData, StringUtils.SPACE);
 
 			if (dataResPayload != null && dataResPayload.length > 0) {
@@ -145,12 +145,15 @@ public class LogParser {
 	private static String parseResourceName(String parsedData) {
 		String resourceName = StringUtils.EMPTY;
 
-		if (!StringUtils.containsAny(parsedData, ".do")) {
+		if (!StringUtils.containsAny(parsedData, ".")) {
 			String[] dataResPayload = StringUtils.split(parsedData, StringUtils.SPACE);
 
 			if (dataResPayload != null && dataResPayload.length > 0) {
-				resourceName = StringUtils.substringBefore(dataResPayload[0], "?");
-				resourceName = StringUtils.substringBefore(resourceName, "/");
+				resourceName = dataResPayload[0];
+				resourceName = StringUtils.containsAny(resourceName, "?")
+						? StringUtils.substringBefore(dataResPayload[0], "?")
+						: resourceName;
+
 			}
 		}
 
