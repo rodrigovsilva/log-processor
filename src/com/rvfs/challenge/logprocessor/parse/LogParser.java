@@ -27,6 +27,11 @@ import com.rvfs.challenge.logprocessor.util.builder.LogObjectBuilder;
 public class LogParser {
 
 	/**
+	 * Struts Action extension.
+	 */
+	private static final String ACTION_EXTENSTION = ".do";
+
+	/**
 	 * This method parse each line of a log file.
 	 *
 	 * @param fileName
@@ -53,8 +58,6 @@ public class LogParser {
 					.setResourceName(parseResourceName(uriResourcePayload)) //
 					.setRequestDurationInMillis(parseRequestDuration(logLine)) //
 					.setEntireUriResource(uriResourcePayload).createLogObject();
-
-			System.out.println(logObject.toString());
 
 			parsedLogs.add(logObject);
 		};
@@ -124,15 +127,22 @@ public class LogParser {
 	 * @return URI parsed.
 	 */
 	private static String parseUri(String parsedData) {
+		String resourceName = StringUtils.EMPTY;
+
 		if (StringUtils.containsAny(parsedData, ".")) {
 			String[] dataResPayload = StringUtils.split(parsedData, StringUtils.SPACE);
 
 			if (dataResPayload != null && dataResPayload.length > 0) {
-				return dataResPayload[0];
+				resourceName = dataResPayload[0];
+
+				if (StringUtils.containsAny(resourceName, ACTION_EXTENSTION)) {
+					int actionIndex = StringUtils.indexOf(dataResPayload[0], ACTION_EXTENSTION);
+					resourceName = StringUtils.substring(resourceName, 0, actionIndex + ACTION_EXTENSTION.length());
+				}
 			}
 		}
 
-		return StringUtils.EMPTY;
+		return resourceName;
 	}
 
 	/**
@@ -150,10 +160,6 @@ public class LogParser {
 
 			if (dataResPayload != null && dataResPayload.length > 0) {
 				resourceName = dataResPayload[0];
-				resourceName = StringUtils.containsAny(resourceName, "?")
-						? StringUtils.substringBefore(dataResPayload[0], "?")
-						: resourceName;
-
 			}
 		}
 

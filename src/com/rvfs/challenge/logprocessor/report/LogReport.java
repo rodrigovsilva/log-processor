@@ -1,6 +1,7 @@
 package com.rvfs.challenge.logprocessor.report;
 
 import java.util.Comparator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -25,27 +26,38 @@ public class LogReport {
 	 */
 	public static void printTopResourcesWithHighestAverageRequestDuration(List<LogObject> logs, long numberOfRequest) {
 
-		System.out.println("***  PRINTING OU TOP RESOURCES WITH HIGHEST AVERAGE REQUEST OF DURATION ***");
+		System.out.println("******** TOP RESOURCES WITH HIGHEST AVERAGE REQUEST OF DURATION ********");
 
 		// order by local date time
 		logs.sort(Comparator.comparing(LogObject::getRequestDurationInMillis).reversed());
 
-		// filter all existent resources
-		logs.stream().filter(l -> (StringUtils.isNotEmpty(l.getResourceName()))).forEach(System.out::println);
-
-		// grouping all resource names by name, summarizing sum and count and
-		// calculating the average
+		// collect and group all resources
 		Map<String, Long> topResourcesCounting = logs.stream()
+				.filter(log -> StringUtils.isNotEmpty(log.getResourceName()))
 				.collect(Collectors.groupingBy(LogObject::getResourceName,
 						Collectors.collectingAndThen(Collectors.summarizingLong(LogObject::getRequestDurationInMillis),
 								summarize -> summarize.getSum() / summarize.getCount())));
 
-		// ordering resources from top to bottom
-		topResourcesCounting.entrySet().stream().sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()));
+		// collect and group all uri and actions
+		Map<String, Long> topUriCounting = logs.stream().filter(log -> StringUtils.isNotEmpty(log.getUri()))
+				.collect(Collectors.groupingBy(LogObject::getUri,
+						Collectors.collectingAndThen(Collectors.summarizingLong(LogObject::getRequestDurationInMillis),
+								summarize -> summarize.getSum() / summarize.getCount())));
+
+		Map<String, Long> totalCounting = new LinkedHashMap<>();
+		totalCounting.putAll(topResourcesCounting);
+		totalCounting.putAll(topUriCounting);
+
+		// ordering all grouping couting
+		Map<String, Long> sortedTotalCounting = totalCounting.entrySet().stream()
+				.sorted(Map.Entry.comparingByValue(Comparator.reverseOrder())).collect(Collectors.toMap(
+						Map.Entry::getKey, Map.Entry::getValue, (oldValue, newValue) -> oldValue, LinkedHashMap::new));
 
 		// print out top request average
-		topResourcesCounting.entrySet().stream().limit(numberOfRequest)
+		sortedTotalCounting.entrySet().stream().limit(numberOfRequest)
 				.forEach((e) -> System.out.println(new StringBuilder(e.getKey()).append(": ").append(e.getValue())));
+
+		System.out.println("************************************************************************");
 
 	}
 
@@ -56,8 +68,8 @@ public class LogReport {
 	 *            Logs to prepare histogram.
 	 */
 	public static void drawHistogram(List<LogObject> logs) {
-
-		System.out.println("***  DRAWING HISTOGRAM OF HOURLY NUMBER OF REQUESTS ******************");
+		System.out.println("************************************************************************");
+		System.out.println("**********  DRAWING HISTOGRAM OF HOURLY NUMBER OF REQUESTS *************");
 
 		// order by local date time
 		logs.sort(Comparator.comparing(LogObject::getDateTimestamp));
@@ -71,6 +83,7 @@ public class LogReport {
 
 		// print the histogram
 		histogram.forEach((String t, Long u) -> System.out.println(new StringBuilder(t).append(": ").append(u)));
+		System.out.println("************************************************************************");
 	}
 
 }

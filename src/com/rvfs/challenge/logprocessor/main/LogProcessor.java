@@ -1,4 +1,4 @@
-package com.rvfs.challenge.logprocessor;
+package com.rvfs.challenge.logprocessor.main;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -55,6 +55,7 @@ public class LogProcessor {
 					LogReport.printTopResourcesWithHighestAverageRequestDuration(logs, numberOfTopRequests);
 					LogReport.drawHistogram(logs);
 
+					System.out.println("************************************************************************");
 					System.out.println("File readed: " + filename);
 					System.out.println("Number to print out the top elements: " + numberOfTopRequests);
 				} else {

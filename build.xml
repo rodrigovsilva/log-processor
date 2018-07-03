@@ -42,7 +42,7 @@
 			<manifest>
 				<!-- create an executable Jar -->
 				<attribute name="Main-Class"
-					value="com.rvfs.challenge.logprocessor.LogProcessor" />
+					value="com.rvfs.challenge.logprocessor.main.LogProcessor" />
 			</manifest>
 		</jar>
 	</target>
